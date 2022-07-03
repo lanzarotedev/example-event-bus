@@ -2,13 +2,15 @@
 namespace EventBus;
 
 /**
- * Event Bus example
+ * The EventBus class is a Singleton, with subscription
+ * and publishing functionality
+ *
  * Copyright (c) 2022 Vlad Madejczyk
  */
 
 class EventBus
 {
-    protected $listeners = array();
+    private $listeners = array();
 
     private function __construct()
     {
@@ -24,6 +26,14 @@ class EventBus
         return $instance;
     }
 
+    /**
+     * Subscribes Sender and Subscriber instances.
+     *
+     * @param Sender     $sender      The Sender instance
+     * @param Subscriber $subscriber  The Subscriber instance
+     *
+     * @return void
+     */
     public static function subscribe(Sender $sender,Subscriber $subscriber)
     {
         $instance = EventBus::getInstance();
@@ -32,6 +42,13 @@ class EventBus
         $instance->listeners[$id][] = $subscriber;
     }
 
+    /**
+     * Publishes Sender message to Subscribers.
+     *
+     * @param Sender $sender The Sender instance
+     *
+     * @return void
+     */
     public static function publish(Sender $sender)
     {
         $instance = EventBus::getInstance();
@@ -40,7 +57,7 @@ class EventBus
         $subscribers = $instance->listeners[$id];
 
         foreach ($subscribers as $subscriber) {
-            $subscriber->handleMessage($sender->getEventMessage());
+            $subscriber->handleEvent($sender->getEvent());
         }
     }
 }
