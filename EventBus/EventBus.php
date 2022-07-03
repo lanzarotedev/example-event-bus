@@ -44,6 +44,10 @@ class EventBus
 
     /**
      * Publishes Sender message to Subscribers.
+     * In fact, with persistent representation of listeners array
+     * it is possible to map multiple Senders vs multiple Subscribers,
+     * depending on context - not always all messages sent by whatever Sender have to
+     * reach every Subscriber.
      *
      * @param Sender $sender The Sender instance
      *
